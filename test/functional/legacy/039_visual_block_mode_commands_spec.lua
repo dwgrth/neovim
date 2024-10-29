@@ -44,6 +44,24 @@ describe('Visual block mode', function()
       abcdqqqqijklm]])
   end)
 
+  it('should insert a block (with CTRL-C exit visual)', function()
+    insert([[
+      abc
+      abc
+      abc]])
+
+    feed([[gg^]])
+    feed([[<C-v>GIxyz]])
+    -- if you actually send a <C-c> the test passes
+    -- local ctrl_c = api.nvim_replace_termcodes("<C-c>", true, false, true)
+    -- api.nvim_feedkeys(ctrl_c, 'n', true)
+
+    expect([[
+      xyzabc
+      xyzabc
+      xyzabc]])
+  end)
+
   -- luacheck: ignore 611 (Line contains only whitespaces)
   it('should insert a block using cursor keys for movement', function()
     insert([[
@@ -51,7 +69,7 @@ describe('Visual block mode', function()
       bbbbbb
       cccccc
       dddddd
-      
+
       xaaa
       bbbb
       cccc
@@ -67,7 +85,7 @@ describe('Visual block mode', function()
       bbb  bbb
       ccc  ccc
       ddd  ddd
-      
+
       <p>xaaa
       <p>bbbb
       <p>cccc
@@ -78,10 +96,10 @@ describe('Visual block mode', function()
     insert([[
       A23
       4567
-      
+
       B23
       4567
-      
+
       C23
       4567]])
 
@@ -98,10 +116,10 @@ describe('Visual block mode', function()
     expect([[
       A23ab
       4567ab
-      
+
       B23 ab
       4567ab
-      
+
       C23ab
       456ab7]])
   end)
@@ -151,7 +169,7 @@ describe('Visual block mode', function()
     feed('ddppi333<ESC>k0i222<esc>fyllvjfuUk<CR>')
 
     expect([[
-      
+
       the YOUTUẞEUU end
       - yOUẞTUẞEXu -
       THE YOUTUẞEUU END
@@ -170,7 +188,7 @@ describe('Visual block mode', function()
     feed('G3o98765<ESC>2k02l<C-v>2jr<C-v><Nul>')
 
     local expected = [[
-      
+
       12345
       789
       12345
